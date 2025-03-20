@@ -4,20 +4,76 @@
   },
   "Routes": [
     {
-      "UpstreamPathTemplate": "/api/{service}/{everything}",
+      "UpstreamPathTemplate": "/api/users/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
-      "DownstreamPathTemplate": "/{service}/{everything}",
-      "DownstreamScheme": "https",
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        { "Host": "localhost", "Port": 5001, "ServiceName": "users" },
-        { "Host": "localhost", "Port": 5002, "ServiceName": "projects" },
-        { "Host": "localhost", "Port": 5003, "ServiceName": "wikis" },
-        { "Host": "localhost", "Port": 5004, "ServiceName": "storage" },
-        { "Host": "localhost", "Port": 5005, "ServiceName": "notifications" }
+        { "Host": "user-service", "Port": 80 }
       ],
       "UpstreamHeaderTransform": {
-        "X-Service-Name": "{service}"
+        "X-Service-Name": "users"
       }
+    },
+    {
+      "UpstreamPathTemplate": "/api/projects/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "project-service", "Port": 80 }
+      ],
+      "UpstreamHeaderTransform": {
+        "X-Service-Name": "projects"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/wikis/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "wiki-service", "Port": 80 }
+      ],
+      "UpstreamHeaderTransform": {
+        "X-Service-Name": "wikis"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/storage/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "storage-service", "Port": 80 }
+      ],
+      "UpstreamHeaderTransform": {
+        "X-Service-Name": "storage"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/notifications/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        { "Host": "notification-service", "Port": 80 }
+      ],
+      "UpstreamHeaderTransform": {
+        "X-Service-Name": "notifications"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/favicon.ico",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/favicon.ico",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ]
     }
   ]
 }

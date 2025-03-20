@@ -1,0 +1,40 @@
+name: Test & Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+jobs:
+  deploy:
+    name: Deploy Docker Images
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v3
+      #   with:
+      #     dotnet-version: 8.0.x
+
+      - name: Log into Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: daqem
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ApiGateway/Dockerfile
+          push: true
+          tags: daqem/projeli:api-gateway

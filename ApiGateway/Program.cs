@@ -10,11 +10,23 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.Value == "/favicon.ico")
+    {
+        context.Response.StatusCode = 204; // No Content
+        return;
+    }
+    await next();
+});
 
 await app.UseOcelot();
 
